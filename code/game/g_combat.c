@@ -1044,6 +1044,8 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 	// do the damage
 	if (take) {
+		G_Vampirism(attacker, targ, take);
+
 		targ->health = targ->health - take;
 		if ( targ->client ) {
 			targ->client->ps.stats[STAT_HEALTH] = targ->health;
@@ -1064,6 +1066,27 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		}
 	}
 
+}
+
+void G_Vampirism(gentity_t* vampier, gentity_t* target, int take)
+{
+	int maxHealth;
+
+	take = take * g_lifesteal.value;
+
+	if (vampier == target)
+	{
+		return;
+	}
+	
+	maxHealth = vampier->client->ps.stats[STAT_MAX_HEALTH] * 2;
+
+	if (take + vampier->health > maxHealth)
+	{
+		take = maxHealth - vampier->health;
+	}
+	
+	vampier->health += take;
 }
 
 

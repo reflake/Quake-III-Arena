@@ -765,6 +765,8 @@ extern	vmCvar_t	g_enableBreath;
 extern	vmCvar_t	g_singlePlayer;
 extern	vmCvar_t	g_proxMineTimeout;
 
+extern	vmCvar_t	g_lifesteal;
+
 void	trap_Printf( const char *fmt );
 void	trap_Error( const char *fmt );
 int		trap_Milliseconds( void );
