@@ -769,6 +769,7 @@ extern	vmCvar_t	g_enableBreath;
 extern	vmCvar_t	g_singlePlayer;
 extern	vmCvar_t	g_proxMineTimeout;
 
+extern	vmCvar_t	g_gauntletDamage;
 extern	vmCvar_t	g_lifesteal;
 extern	vmCvar_t	g_lifesteal_duel;
 extern	vmCvar_t	g_overhealDrain;

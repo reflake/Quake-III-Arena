@@ -82,6 +82,7 @@ vmCvar_t	pmove_msec;
 vmCvar_t	g_rankings;
 vmCvar_t	g_listEntity;
 
+vmCvar_t	g_gauntletDamage;
 vmCvar_t	g_lifesteal;
 vmCvar_t	g_lifesteal_duel;
 vmCvar_t	g_overhealDrain;
@@ -166,6 +167,7 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_allowVote, "g_allowVote", "1", CVAR_ARCHIVE, 0, qfalse },
 	{ &g_listEntity, "g_listEntity", "0", 0, 0, qfalse },
 
+	{ &g_gauntletDamage, "g_gauntletDamage", "0", 0, 0, qtrue },
 	{ &g_lifesteal, "g_lifesteal", "0", 0, 0, qtrue  },
 	{ &g_lifesteal_duel, "g_lifesteal_duel", "0", 0, 0, qtrue  },
 	{ &g_overhealDrain, "g_overhealDrain", "1", 0, 0, qtrue  },

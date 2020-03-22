@@ -111,7 +111,11 @@ qboolean CheckGauntletAttack( gentity_t *ent ) {
 	}
 #endif
 
-	damage = 50 * s_quadFactor;
+	if (g_gauntletDamage.value == 0)
+		damage = 50 * s_quadFactor;
+	else
+		damage = g_gauntletDamage.value;
+
 	G_Damage( traceEnt, ent, ent, forward, tr.endpos,
 		damage, 0, MOD_GAUNTLET );
 
