@@ -1057,6 +1057,32 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 		targ->client->lasthurt_mod = mod;
 	}
 
+	if (targ->client && attacker->client && targ->health > 0)
+	{
+		static float	z_ratio;
+		static float	z_rel;
+		static int		height;
+		static float	targ_maxs2;
+
+		if (inflictor->s.weapon == WP_RAILGUN)
+		{
+			targ_maxs2 = targ->r.maxs[2];
+			height = abs(targ->r.mins[2]) + targ_maxs2;
+
+			if (targ->client->ps.pm_flags & PMF_DUCKED) {
+				height *= 0.75f;
+			}
+
+			z_rel = point[2] - targ->r.currentOrigin[2] + abs(targ->r.mins[2]);
+			z_ratio = z_rel / height;
+
+			if (z_ratio < 0.9f)
+			{
+				take *= 0.8f;
+			}
+		}
+	}
+
 	// do the damage
 	if (take) {
 		G_Vampirism(attacker, inflictor, targ, take);
