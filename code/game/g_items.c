@@ -878,6 +878,12 @@ be on an entity that hasn't spawned yet.
 ============
 */
 void G_SpawnItem (gentity_t *ent, gitem_t *item) {
+
+	if (strlen(gunmode_rotation.string) > 0)
+	{
+		return;
+	}
+
 	G_SpawnFloat( "random", "0", &ent->random );
 	G_SpawnFloat( "wait", "0", &ent->wait );
 

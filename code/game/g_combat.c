@@ -96,7 +96,8 @@ void TossClientItems( gentity_t *self ) {
 		}
 	}
 
-	if ( weapon > WP_MACHINEGUN && weapon != WP_GRAPPLING_HOOK && 
+	if (strlen(gunmode_rotation.string) == 0 &&
+		weapon > WP_MACHINEGUN && weapon != WP_GRAPPLING_HOOK && 
 		self->client->ps.ammo[ weapon ] ) {
 		// find the item type for this weapon
 		item = BG_FindItemForWeapon( weapon );
@@ -675,6 +676,20 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 			Kamikaze_DeathTimer( self );
 		}
 #endif
+	}
+
+	i = strlen(gunmode_rotation.string);
+
+	if (attacker && attacker->client && attacker != self && i > 0)
+	{
+		attacker->client->ps.persistant[PERS_GUNMODE_WEAPON] = (attacker->client->ps.persistant[PERS_GUNMODE_WEAPON] + 1) % i;
+
+		if (g_gametype.value == GT_TOURNAMENT)
+		{
+			self->client->ps.persistant[PERS_GUNMODE_WEAPON] = attacker->client->ps.persistant[PERS_GUNMODE_WEAPON];
+		}
+
+		G_GiveWeapons(attacker->client);
 	}
 
 	trap_LinkEntity (self);

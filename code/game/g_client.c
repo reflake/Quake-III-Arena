@@ -1176,19 +1176,10 @@ void ClientSpawn(gentity_t *ent) {
 
 	client->ps.clientNum = index;
 
-	client->ps.stats[STAT_WEAPONS] = ( 1 << WP_MACHINEGUN );
-	if ( g_gametype.integer == GT_TEAM ) {
-		client->ps.ammo[WP_MACHINEGUN] = 50;
-	} else {
-		client->ps.ammo[WP_MACHINEGUN] = 100;
-	}
-
-	client->ps.stats[STAT_WEAPONS] |= ( 1 << WP_GAUNTLET );
-	client->ps.ammo[WP_GAUNTLET] = -1;
-	client->ps.ammo[WP_GRAPPLING_HOOK] = -1;
+	G_GiveWeapons(client);
 
 	// health will count down towards max_health
-	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] + 25;
+	G_SetRespawnHealth( ent );
 
 	G_SetOrigin( ent, spawn_origin );
 	VectorCopy( spawn_origin, client->ps.origin );
@@ -1260,6 +1251,83 @@ void ClientSpawn(gentity_t *ent) {
 	BG_PlayerStateToEntityState( &client->ps, &ent->s, qtrue );
 }
 
+void G_GiveWeapons(gclient_t* client)
+{
+	int gunmodeWeapon;
+
+	if (strlen(gunmode_rotation.string) == 0)
+	{
+		client->ps.stats[STAT_WEAPONS] = (1 << WP_MACHINEGUN);
+		if (g_gametype.integer == GT_TEAM) {
+			client->ps.ammo[WP_MACHINEGUN] = 50;
+		}
+		else {
+			client->ps.ammo[WP_MACHINEGUN] = 100;
+		}
+	}
+	else
+	{
+		gunmodeWeapon = client->ps.persistant[PERS_GUNMODE_WEAPON];
+		
+		switch (gunmode_rotation.string[gunmodeWeapon])
+		{
+		case 'R':
+		case 'r':
+			gunmodeWeapon = WP_ROCKET_LAUNCHER;
+			break;
+		case 'L':
+		case 'l':
+			gunmodeWeapon = WP_LIGHTNING;
+			break;
+		case 'G':
+		case 'g':
+			gunmodeWeapon = WP_GRENADE_LAUNCHER;
+			break;
+		case 'P':
+		case 'p':
+			gunmodeWeapon = WP_PLASMAGUN;
+			break;
+		case 'S':
+		case 's':
+			gunmodeWeapon = WP_SHOTGUN;
+			break;
+		case 'B':
+		case 'b':
+			gunmodeWeapon = WP_BFG;
+			break;
+		case 'M':
+		case 'm':
+			gunmodeWeapon = WP_MACHINEGUN;
+			break;
+		case 'A':
+		case 'a':
+			gunmodeWeapon = WP_RAILGUN;
+			break;
+		}
+	
+		client->ps.stats[STAT_WEAPONS] = (1 << gunmodeWeapon);
+		client->ps.ammo[gunmodeWeapon] = 999;
+
+		client->ps.weapon = gunmodeWeapon;
+		client->ps.weaponstate = WEAPON_READY;
+	}
+
+	client->ps.stats[STAT_WEAPONS] |= (1 << WP_GAUNTLET);
+	client->ps.ammo[WP_GAUNTLET] = -1;
+	client->ps.ammo[WP_GRAPPLING_HOOK] = -1;
+}
+
+void G_SetRespawnHealth(gentity_t* ent)
+{
+	int spawnHealth = 0;
+
+	if (g_spawnHealth.value > 0)
+	{
+		spawnHealth = g_spawnHealth.value;
+	}
+
+	ent->health = ent->client->ps.stats[STAT_HEALTH] = ent->client->ps.stats[STAT_MAX_HEALTH] + spawnHealth;
+}
 
 /*
 ===========

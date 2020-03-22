@@ -580,6 +580,8 @@ void InitClientPersistant (gclient_t *client);
 void InitClientResp (gclient_t *client);
 void InitBodyQue (void);
 void ClientSpawn( gentity_t *ent );
+void G_GiveWeapons( gclient_t* ent );
+void G_SetRespawnHealth( gentity_t* ent );
 void player_die (gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int mod);
 void AddScore( gentity_t *ent, vec3_t origin, int score );
 void CalculateRanks( void );
@@ -767,6 +769,8 @@ extern	vmCvar_t	g_proxMineTimeout;
 
 extern	vmCvar_t	g_lifesteal;
 extern	vmCvar_t	g_overhealDrain;
+extern	vmCvar_t	g_spawnHealth;
+extern	vmCvar_t	gunmode_rotation;
 
 void	trap_Printf( const char *fmt );
 void	trap_Error( const char *fmt );
