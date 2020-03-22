@@ -1087,7 +1087,8 @@ void G_Vampirism(gentity_t* vampier, gentity_t* target, int take)
 {
 	int maxHealth;
 
-	if (vampier == target)
+	if (vampier == target || 
+		vampier->health <= 0 )
 	{
 		return;
 	}
