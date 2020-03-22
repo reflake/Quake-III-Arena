@@ -1059,7 +1059,7 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 	// do the damage
 	if (take) {
-		G_Vampirism(attacker, targ, take);
+		G_Vampirism(attacker, inflictor, targ, take);
 
 		targ->health = targ->health - take;
 		if ( targ->client ) {
@@ -1083,12 +1083,13 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 }
 
-void G_Vampirism(gentity_t* vampier, gentity_t* target, int take)
+void G_Vampirism(gentity_t* vampier, gentity_t* inflictor, gentity_t* target, int take)
 {
 	int maxHealth;
 
-	if (vampier == target || 
-		vampier->health <= 0 )
+	if  (vampier == target || 
+		 vampier->health <= 0 ||
+		 vampier->avatarId != inflictor->avatarId)
 	{
 		return;
 	}
@@ -1169,7 +1170,7 @@ qboolean CanDamage (gentity_t *targ, vec3_t origin) {
 G_RadiusDamage
 ============
 */
-qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, float radius,
+qboolean G_RadiusDamage ( vec3_t origin, gentity_t *inflictor, gentity_t *attacker, float damage, float radius,
 					 gentity_t *ignore, int mod) {
 	float		points, dist;
 	gentity_t	*ent;
@@ -1226,7 +1227,7 @@ qboolean G_RadiusDamage ( vec3_t origin, gentity_t *attacker, float damage, floa
 			// push the center of mass higher than the origin so players
 			// get knocked into the air more
 			dir[2] += 24;
-			G_Damage (ent, NULL, attacker, dir, origin, (int)points, DAMAGE_RADIUS, mod);
+			G_Damage (ent, inflictor, attacker, dir, origin, (int)points, DAMAGE_RADIUS, mod);
 		}
 	}
 
