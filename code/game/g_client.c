@@ -1058,6 +1058,7 @@ void ClientSpawn(gentity_t *ent) {
 	int		persistant[MAX_PERSISTANT];
 	gentity_t	*spawnPoint;
 	int		flags;
+	int		savedAvatar;
 	int		savedPing;
 //	char	*savedAreaBits;
 	int		accuracy_hits, accuracy_shots;
@@ -1066,7 +1067,6 @@ void ClientSpawn(gentity_t *ent) {
 
 	index = ent - g_entities;
 	client = ent->client;
-	ent->avatarId++;
 
 	// find a spawn point
 	// do it before setting health back up, so farthest
@@ -1122,6 +1122,7 @@ void ClientSpawn(gentity_t *ent) {
 	saved = client->pers;
 	savedSess = client->sess;
 	savedPing = client->ps.ping;
+	savedAvatar = ent->avatarId;
 //	savedAreaBits = client->areabits;
 	accuracy_hits = client->accuracy_hits;
 	accuracy_shots = client->accuracy_shots;
@@ -1131,6 +1132,8 @@ void ClientSpawn(gentity_t *ent) {
 	eventSequence = client->ps.eventSequence;
 
 	memset (client, 0, sizeof(*client)); // bk FIXME: Com_Memset?
+
+	ent->avatarId = savedAvatar + 1;
 
 	client->pers = saved;
 	client->sess = savedSess;
