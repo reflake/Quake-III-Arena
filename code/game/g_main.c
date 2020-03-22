@@ -83,6 +83,7 @@ vmCvar_t	g_rankings;
 vmCvar_t	g_listEntity;
 
 vmCvar_t	g_lifesteal;
+vmCvar_t	g_overhealDrain;
 
 #ifdef MISSIONPACK
 vmCvar_t	g_obeliskHealth;
@@ -163,6 +164,7 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_listEntity, "g_listEntity", "0", 0, 0, qfalse },
 
 	{ &g_lifesteal, "g_lifesteal", "0", 0, 0, qtrue  },
+	{ &g_overhealDrain, "g_overhealDrain", "1", 0, 0, qtrue  },
 
 #ifdef MISSIONPACK
 	{ &g_obeliskHealth, "g_obeliskHealth", "2500", 0, 0, qfalse },

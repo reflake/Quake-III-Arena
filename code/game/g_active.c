@@ -455,8 +455,11 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 #endif
 		} else {
 			// count down health when over max
-			if ( ent->health > client->ps.stats[STAT_MAX_HEALTH] ) {
-				ent->health--;
+			if ( g_overhealDrain.value > 0 && ent->health - g_overhealDrain.value > client->ps.stats[STAT_MAX_HEALTH] ) {
+				ent->health -= g_overhealDrain.value;
+			}
+			else if (ent->health > client->ps.stats[STAT_MAX_HEALTH]) {
+				ent->health = client->ps.stats[STAT_MAX_HEALTH];
 			}
 		}
 

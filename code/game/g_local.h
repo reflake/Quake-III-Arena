@@ -766,6 +766,7 @@ extern	vmCvar_t	g_singlePlayer;
 extern	vmCvar_t	g_proxMineTimeout;
 
 extern	vmCvar_t	g_lifesteal;
+extern	vmCvar_t	g_overhealDrain;
 
 void	trap_Printf( const char *fmt );
 void	trap_Error( const char *fmt );
