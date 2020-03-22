@@ -1111,11 +1111,31 @@ void G_Damage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
 
 void G_Vampirism(gentity_t* vampier, gentity_t* inflictor, gentity_t* target, int take)
 {
+	int vampierNum;
 	int maxHealth;
 
-	if  (vampier == target || 
+	if (g_lifesteal_duel.value == 1 && g_gametype.value == GT_TOURNAMENT)
+	{
+		if (&level.gentities[level.sortedClients[0]] == target)
+		{
+			vampierNum = level.sortedClients[1];
+		}
+		else
+		{
+			vampierNum = level.sortedClients[0];
+		}
+
+		vampier = &level.gentities[vampierNum];
+	}
+	else if
+		(vampier == target || 
 		 vampier->health <= 0 ||
-		 vampier->avatarId != inflictor->avatarId)
+		(inflictor != NULL && vampier->avatarId != inflictor->avatarId))
+	{
+		return;
+	}
+
+	if (vampier->health <= 0)
 	{
 		return;
 	}
