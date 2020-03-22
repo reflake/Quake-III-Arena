@@ -1072,12 +1072,12 @@ void G_Vampirism(gentity_t* vampier, gentity_t* target, int take)
 {
 	int maxHealth;
 
-	take = take * g_lifesteal.value;
-
 	if (vampier == target)
 	{
 		return;
 	}
+
+	take = take * g_lifesteal.value;
 	
 	maxHealth = vampier->client->ps.stats[STAT_MAX_HEALTH] * 2;
 
