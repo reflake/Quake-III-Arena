@@ -1072,11 +1072,6 @@ void G_Vampirism(gentity_t* vampier, gentity_t* target, int take)
 {
 	int maxHealth;
 
-	if (strcmp(vampier->client->pers.netname, "bratiwka") == 0)
-	{
-		return;
-	}
-
 	take = take * g_lifesteal.value;
 
 	if (vampier == target)
