@@ -861,26 +861,26 @@ G_ItemDisabled
 */
 int G_ItemDisabled( gitem_t *item ) {
 
+	char name[128];
+
 	if (trap_Cvar_VariableIntegerValue("disable_items"))
-		return;
+		return 1;
 
 	if (trap_Cvar_VariableIntegerValue("disable_weapon") || 
 		strlen(gunmode_rotation.string) > 0 &&
 		item->giType == IT_WEAPON || item->giType == IT_AMMO)
 	{
-		return;
+		return 1;
 	}
 
 	if (item->giType == IT_AMMO && trap_Cvar_VariableIntegerValue("disable_ammo"))
-		return;
+		return 1;
 	if (item->giType == IT_ARMOR && trap_Cvar_VariableIntegerValue("disable_armor"))
-		return;
+		return 1;
 	if (item->giType == IT_HEALTH && trap_Cvar_VariableIntegerValue("disable_health"))
-		return;
+		return 1;
 	if (item->giType == IT_POWERUP && trap_Cvar_VariableIntegerValue("disable_powerup"))
-		return;
-
-	char name[128];
+		return 1;
 
 	Com_sprintf(name, sizeof(name), "disable_%s", item->classname);
 	return trap_Cvar_VariableIntegerValue( name );
