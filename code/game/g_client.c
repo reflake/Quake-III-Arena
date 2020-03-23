@@ -1307,13 +1307,30 @@ void G_GiveWeapons(gclient_t* client)
 		case 'a':
 			gunmodeWeapon = WP_RAILGUN;
 			break;
+		case 'F':
+		case 'f':
+			gunmodeWeapon = WP_GAUNTLET;
+			break;
+		default:
+			gunmodeWeapon = -1;
+			break;
 		}
 	
-		client->ps.stats[STAT_WEAPONS] = (1 << gunmodeWeapon);
-		client->ps.ammo[gunmodeWeapon] = 999;
+		if (gunmodeWeapon != -1)
+		{
+			if (gunmodeWeapon != WP_GAUNTLET)
+			{
+				client->ps.ammo[gunmodeWeapon] = 999;
+			}
 
-		client->ps.weapon = gunmodeWeapon;
-		client->ps.weaponstate = WEAPON_READY;
+			if (client->ps.weapon != gunmodeWeapon)
+			{
+				client->ps.stats[STAT_WEAPONS] = (1 << gunmodeWeapon);
+				client->ps.weapon = gunmodeWeapon;
+				client->ps.weaponstate = WEAPON_READY;
+				client->ps.weaponTime = 0;
+			}
+		}
 	}
 
 	client->ps.stats[STAT_WEAPONS] |= (1 << WP_GAUNTLET);
