@@ -85,6 +85,7 @@ vmCvar_t	g_listEntity;
 vmCvar_t	g_gauntletDamage;
 vmCvar_t	g_lifesteal;
 vmCvar_t	g_lifesteal_duel;
+vmCvar_t	g_megapickups;
 vmCvar_t	g_overhealDrain;
 vmCvar_t	g_spawnHealth;
 vmCvar_t	gunmode_rotation;
@@ -170,6 +171,7 @@ static cvarTable_t		gameCvarTable[] = {
 	{ &g_gauntletDamage, "g_gauntletDamage", "0", 0, 0, qtrue },
 	{ &g_lifesteal, "g_lifesteal", "0", 0, 0, qtrue  },
 	{ &g_lifesteal_duel, "g_lifesteal_duel", "0", 0, 0, qtrue  },
+	{ &g_megapickups, "g_megapickups", "0", 0, 0, qtrue  },
 	{ &g_overhealDrain, "g_overhealDrain", "1", 0, 0, qtrue  },
 	{ &g_spawnHealth, "g_spawnHealth", "25", 0, 0, qtrue  },
 	{ &gunmode_rotation, "gunmode_rotation", "", 0, 0, qtrue  },

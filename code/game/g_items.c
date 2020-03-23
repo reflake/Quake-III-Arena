@@ -886,6 +886,24 @@ int G_ItemDisabled( gitem_t *item ) {
 	return trap_Cvar_VariableIntegerValue( name );
 }
 
+gitem_t* G_ItemReplace(gitem_t* item) {
+
+	if (g_megapickups.value)
+	{
+		switch (item->giType)
+		{
+		case IT_ARMOR:
+			return BG_FindItemByClassname("item_armor_body");
+			break;
+		case IT_HEALTH:
+			return BG_FindItemByClassname("item_health_mega");
+			break;
+		}
+	}
+
+	return NULL;
+}
+
 /*
 ============
 G_SpawnItem
@@ -898,12 +916,17 @@ be on an entity that hasn't spawned yet.
 */
 void G_SpawnItem (gentity_t *ent, gitem_t *item) {
 
+	gitem_t* replacement;
+
 	G_SpawnFloat( "random", "0", &ent->random );
 	G_SpawnFloat( "wait", "0", &ent->wait );
 
 	RegisterItem( item );
 	if ( G_ItemDisabled(item) )
 		return;
+
+	if (replacement = G_ItemReplace(item))
+		item = replacement;
 
 	ent->item = item;
 	// some movers spawn on the second frame, so delay item
