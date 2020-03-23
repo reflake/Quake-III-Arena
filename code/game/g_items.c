@@ -861,6 +861,25 @@ G_ItemDisabled
 */
 int G_ItemDisabled( gitem_t *item ) {
 
+	if (trap_Cvar_VariableIntegerValue("disable_items"))
+		return;
+
+	if (trap_Cvar_VariableIntegerValue("disable_weapon") || 
+		strlen(gunmode_rotation.string) > 0 &&
+		item->giType == IT_WEAPON || item->giType == IT_AMMO)
+	{
+		return;
+	}
+
+	if (item->giType == IT_AMMO && trap_Cvar_VariableIntegerValue("disable_ammo"))
+		return;
+	if (item->giType == IT_ARMOR && trap_Cvar_VariableIntegerValue("disable_armor"))
+		return;
+	if (item->giType == IT_HEALTH && trap_Cvar_VariableIntegerValue("disable_health"))
+		return;
+	if (item->giType == IT_POWERUP && trap_Cvar_VariableIntegerValue("disable_powerup"))
+		return;
+
 	char name[128];
 
 	Com_sprintf(name, sizeof(name), "disable_%s", item->classname);
@@ -878,11 +897,6 @@ be on an entity that hasn't spawned yet.
 ============
 */
 void G_SpawnItem (gentity_t *ent, gitem_t *item) {
-
-	if (strlen(gunmode_rotation.string) > 0)
-	{
-		return;
-	}
 
 	G_SpawnFloat( "random", "0", &ent->random );
 	G_SpawnFloat( "wait", "0", &ent->wait );
