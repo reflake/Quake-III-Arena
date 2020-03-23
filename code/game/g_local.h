@@ -325,6 +325,8 @@ struct gclient_s {
 #endif
 
 	char		*areabits;
+
+	int			drainTime;
 };
 
 

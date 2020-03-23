@@ -405,9 +405,11 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 #ifdef MISSIONPACK
 	int			maxHealth;
 #endif
+	int			overhealDrainPeriod;
 
 	client = ent->client;
 	client->timeResidual += msec;
+	client->drainTime += msec;
 
 	while ( client->timeResidual >= 1000 ) {
 		client->timeResidual -= 1000;
@@ -455,13 +457,10 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 #endif
 		} else {
 			// count down health when over max
-			if (g_overhealDrain.value > 0)
+			if (g_overhealDrain.value == 1)
 			{
-				if ( ent->health - g_overhealDrain.value > client->ps.stats[STAT_MAX_HEALTH] ) {
-					ent->health -= g_overhealDrain.value;
-				}
-				else if (ent->health > client->ps.stats[STAT_MAX_HEALTH]) {
-					ent->health = client->ps.stats[STAT_MAX_HEALTH];
+				if ( ent->health > client->ps.stats[STAT_MAX_HEALTH] ) {
+					ent->health--;
 				}
 			}
 		}
@@ -471,6 +470,24 @@ void ClientTimerActions( gentity_t *ent, int msec ) {
 			client->ps.stats[STAT_ARMOR]--;
 		}
 	}
+
+	if (g_overhealDrain.value > 0 && g_overhealDrain.value != 1)
+	{
+		overhealDrainPeriod = 1000 / g_overhealDrain.value;
+
+		while (client->drainTime >= overhealDrainPeriod)
+		{
+			client->drainTime -= overhealDrainPeriod;
+
+			if (ent->health > client->ps.stats[STAT_MAX_HEALTH]) {
+				ent->health--;
+			}
+		}
+	}
+	else {
+		client->drainTime = client->timeResidual;
+	}
+
 #ifdef MISSIONPACK
 	if( bg_itemlist[client->ps.stats[STAT_PERSISTANT_POWERUP]].giTag == PW_AMMOREGEN ) {
 		int w, max, inc, t, i;
